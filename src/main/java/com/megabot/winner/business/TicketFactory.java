@@ -1,4 +1,4 @@
-package com.megabot.winner;
+package com.megabot.winner.business;
 
 import static com.megabot.winner.support.Constraints.isNotNull;
 import static com.megabot.winner.support.model.FailCode.MSG_001;
@@ -8,9 +8,9 @@ import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.megabot.winner.model.TicketType;
-import com.megabot.winner.model.TicketRequest;
-import com.megabot.winner.model.TicketResponse;
+import com.megabot.winner.inteface.model.TicketRequest;
+import com.megabot.winner.inteface.model.TicketResponse;
+import com.megabot.winner.inteface.model.TicketType;
 import com.megabot.winner.support.exception.WinnerException;
 
 @Component

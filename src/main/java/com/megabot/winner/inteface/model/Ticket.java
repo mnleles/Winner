@@ -1,4 +1,4 @@
-package com.megabot.winner.model;
+package com.megabot.winner.inteface.model;
 
 import java.time.LocalDate;
 import java.util.Set;

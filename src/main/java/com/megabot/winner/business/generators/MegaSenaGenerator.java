@@ -1,14 +1,14 @@
-package com.megabot.winner.impl;
+package com.megabot.winner.business.generators;
 
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.megabot.winner.TicketGenerator;
-import com.megabot.winner.model.TicketType;
-import com.megabot.winner.model.Ticket;
-import com.megabot.winner.rule.black.IBlackRule;
+import com.megabot.winner.business.TicketGenerator;
+import com.megabot.winner.business.rule.black.IBlackRule;
+import com.megabot.winner.inteface.model.Ticket;
+import com.megabot.winner.inteface.model.TicketType;
 
 @Component
 public class MegaSenaGenerator implements TicketGenerator {

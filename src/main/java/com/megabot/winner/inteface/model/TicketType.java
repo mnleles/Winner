@@ -1,4 +1,4 @@
-package com.megabot.winner.model;
+package com.megabot.winner.inteface.model;
 
 public enum TicketType {
 

@@ -1,8 +1,8 @@
-package com.megabot.winner.rule.black;
+package com.megabot.winner.business.rule.black;
 
 import org.springframework.stereotype.Component;
 
-import com.megabot.winner.model.Ticket;
+import com.megabot.winner.inteface.model.Ticket;
 
 @Component
 public class SequenceNumberBlackRule implements IBlackRule {
