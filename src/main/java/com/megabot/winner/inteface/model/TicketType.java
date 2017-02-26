@@ -2,7 +2,8 @@ package com.megabot.winner.inteface.model;
 
 public enum TicketType {
 
-	MEGA_SENA(6, 1, 60);
+	MEGA_SENA(6, 1, 60),
+	LOTOFACIL(15, 1, 25);
 
 	public int amountNumbers;
 	public int maxNumber;

@@ -1,8 +1,8 @@
-package com.megabot.winner.business;
+package com.megabot.winner.business.ticket;
 
 import com.megabot.winner.inteface.model.TicketType;
 
-public interface IAssignble
+public interface ITicketAssignble
 {
 	boolean isAssignbleTo(TicketType type);
 }

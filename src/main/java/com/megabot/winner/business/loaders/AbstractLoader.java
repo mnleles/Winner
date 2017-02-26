@@ -5,7 +5,7 @@ import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.megabot.winner.business.TicketLoader;
+import com.megabot.winner.business.ticket.TicketLoader;
 import com.megabot.winner.inteface.model.Ticket;
 import com.megabot.winner.repository.TicketRepository;
 import com.megabot.winner.support.exception.WinnerException;

@@ -1,10 +1,10 @@
-package com.megabot.winner.business;
+package com.megabot.winner.business.ticket;
 
 import java.util.Collection;
 
 import com.megabot.winner.support.exception.WinnerException;
 
-public interface TicketLoader extends IAssignble
+public interface TicketLoader extends ITicketAssignble
 {
 	void load(Collection<String> rawData) throws WinnerException;
 }

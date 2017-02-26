@@ -4,6 +4,7 @@ import static com.megabot.winner.support.Constraints.*;
 import static com.megabot.winner.support.model.FailCode.*;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 import org.springframework.stereotype.Component;
 
@@ -26,7 +27,8 @@ public class MegaSenaLoader extends AbstractLoader
 	{
 		String[] data = line.split(";");
 		Ticket megaSena = new MegaSena();
-		megaSena.setId(data[0]);
+		megaSena.setId(UUID.randomUUID());
+		megaSena.setContestId(Integer.parseInt(data[0]));
 		megaSena.setDate(LocalDate.parse(data[1], getDatePattern()));
 		megaSena.getNumbers().add(Integer.parseInt(data[2]));
 		megaSena.getNumbers().add(Integer.parseInt(data[3]));

@@ -1,4 +1,4 @@
-package com.megabot.winner.business;
+package com.megabot.winner.business.ticket;
 
 import static com.megabot.winner.support.Constraints.isNotEmpty;
 import static com.megabot.winner.support.Constraints.isNotNull;

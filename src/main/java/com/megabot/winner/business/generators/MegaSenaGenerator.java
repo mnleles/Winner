@@ -2,7 +2,7 @@ package com.megabot.winner.business.generators;
 
 import org.springframework.stereotype.Component;
 
-import com.megabot.winner.business.TicketGenerator;
+import com.megabot.winner.business.ticket.TicketGenerator;
 import com.megabot.winner.inteface.model.Ticket;
 import com.megabot.winner.inteface.model.TicketType;
 

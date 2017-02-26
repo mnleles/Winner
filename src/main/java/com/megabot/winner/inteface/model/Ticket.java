@@ -8,10 +8,19 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document
 public class Ticket extends AbstractModel {
 
+	private Integer contestId;
 	private LocalDate date;
 	private Set<Integer> numbers;
 	private TicketType type;
 	private Boolean winningTicket;
+
+	public Integer getContestId() {
+		return contestId;
+	}
+
+	public void setContestId(Integer contestId) {
+		this.contestId = contestId;
+	}
 
 	public LocalDate getDate() {
 		return date;

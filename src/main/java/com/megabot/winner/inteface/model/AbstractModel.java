@@ -1,18 +1,20 @@
 package com.megabot.winner.inteface.model;
 
+import java.util.UUID;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.data.annotation.Id;
 
 public abstract class AbstractModel {
 
 	@Id
-	public String id;
+	public UUID id;
 
-	public String getId() {
+	public UUID getId() {
 		return id;
 	}
 
-	public void setId(final String id) {
+	public void setId(final UUID id) {
 		this.id = id;
 	}
 
