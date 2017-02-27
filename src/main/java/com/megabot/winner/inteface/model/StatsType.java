@@ -1,6 +1,11 @@
 package com.megabot.winner.inteface.model;
 
-public enum StatsType {
+public enum StatsType
+{
+	FREQUENCY_NUMBERS;
 
-	NUMBERS;
+	public boolean isDefault()
+	{
+		return true;
+	}
 }

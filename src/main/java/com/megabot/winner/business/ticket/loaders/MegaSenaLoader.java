@@ -1,4 +1,4 @@
-package com.megabot.winner.business.loaders;
+package com.megabot.winner.business.ticket.loaders;
 
 import static com.megabot.winner.support.Constraints.*;
 import static com.megabot.winner.support.model.FailCode.*;

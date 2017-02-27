@@ -5,21 +5,24 @@ import java.util.UUID;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.data.annotation.Id;
 
-public abstract class AbstractModel {
-
+public abstract class AbstractModel
+{
 	@Id
 	public UUID id;
 
-	public UUID getId() {
+	public UUID getId()
+	{
 		return id;
 	}
 
-	public void setId(final UUID id) {
+	public void setId(final UUID id)
+	{
 		this.id = id;
 	}
 
 	@Override
-	public String toString() {
+	public String toString()
+	{
 		return ToStringBuilder.reflectionToString(this);
 	}
 }

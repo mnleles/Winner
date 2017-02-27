@@ -1,4 +1,4 @@
-package com.megabot.winner.business.rule;
+package com.megabot.winner.business.ticket.rule;
 
 import com.megabot.winner.business.ticket.ITicketAssignble;
 import com.megabot.winner.inteface.model.Ticket;

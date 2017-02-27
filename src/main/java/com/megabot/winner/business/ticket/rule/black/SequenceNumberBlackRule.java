@@ -1,4 +1,4 @@
-package com.megabot.winner.business.rule.black;
+package com.megabot.winner.business.ticket.rule.black;
 
 import org.springframework.stereotype.Component;
 

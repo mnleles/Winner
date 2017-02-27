@@ -1,4 +1,4 @@
-package com.megabot.winner.business.generators;
+package com.megabot.winner.business.ticket.impl;
 
 import org.springframework.stereotype.Component;
 

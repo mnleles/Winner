@@ -1,4 +1,4 @@
-package com.megabot.winner.business.loaders;
+package com.megabot.winner.business.ticket.loaders;
 
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;

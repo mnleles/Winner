@@ -1,6 +1,6 @@
 package com.megabot.winner.controller;
 
-import static com.megabot.winner.support.model.FailCode.SYS_ERROR;
+import static com.megabot.winner.support.model.FailCode.*;
 
 import java.io.File;
 import java.math.BigInteger;
@@ -36,38 +36,18 @@ import com.megabot.winner.support.model.Response;
 
 @RestController
 @RequestMapping("ticket")
-public class TicketController {
+public class TicketController
+{
 	@Autowired
 	private TicketFactory ticketFactory;
 
 	@Resource
 	private TicketRepository ticketRepository;
 
-	@PostMapping("load")
-	@ResponseBody
-	public Response load(@RequestParam("type") final TicketType type, @RequestParam("file") final MultipartFile file,
-			final RedirectAttributes redirectAttributes) {
-		Response response = new Response();
-
-		try {
-			File csv = File.createTempFile("ticketRawData_", UUID.randomUUID().toString());
-			file.transferTo(csv);
-			List<String> lines = FileUtils.readLines(csv, Charset.defaultCharset());
-			lines.remove(BigInteger.ZERO.intValue()); // exclude header
-			ticketFactory.loadData(lines, type);
-
-		} catch (WinnerException we) {
-			response.addAllFails(we.getMessages());
-		} catch (Exception e) {
-			response.addAllFail(MessageFail.builder(SYS_ERROR));
-		}
-
-		return response;
-	}
-
 	@GetMapping("fetchById")
 	@ResponseBody
-	public Response fetchById(@RequestParam("id") final String id) {
+	public Response fetchById(@RequestParam("id") final String id)
+	{
 
 		TicketResponse response = new TicketResponse();
 		response.addTicket(ticketRepository.findOne(UUID.fromString(id)));
@@ -76,21 +56,42 @@ public class TicketController {
 
 	@GetMapping("fetchByType/{type}/{page}/{pageSize}")
 	@ResponseBody
-	public Response fetchByType(@PathVariable(value = "type") final TicketType type,
-			@PathVariable(value = "page", required = false) final Integer page,
-			@PathVariable(value = "pageSize", required = false) final Integer pageSize) {
+	public Response fetchByType(@PathVariable(value = "type") final TicketType type, @PathVariable(value = "page", required = false) final Integer page,
+			@PathVariable(value = "pageSize", required = false) final Integer pageSize)
+	{
 
-		return fetchAllTickets(type, (page == null ? 1 : page), (pageSize == null ? 10 : pageSize));
+		return fetchAllTickets(type, page == null ? 1 : page, pageSize == null ? 10 : pageSize);
 	}
 
-	public Response generateStats(@RequestParam("type") final TicketType type) {
+	@PostMapping("load")
+	@ResponseBody
+	public Response load(@RequestParam("type") final TicketType type, @RequestParam("file") final MultipartFile file, final RedirectAttributes redirectAttributes)
+	{
+		Response response = new Response();
 
-		return new Response();
+		try
+		{
+			File csv = File.createTempFile("ticketRawData_", UUID.randomUUID().toString());
+			file.transferTo(csv);
+			List<String> lines = FileUtils.readLines(csv, Charset.defaultCharset());
+			lines.remove(BigInteger.ZERO.intValue()); // exclude header
+			ticketFactory.loadData(lines, type);
+
+		} catch (WinnerException we)
+		{
+			response.addAllFails(we.getMessages());
+		} catch (Exception e)
+		{
+			response.addAllFail(MessageFail.builder(SYS_ERROR));
+		}
+
+		return response;
 	}
 
-	private Response fetchAllTickets(final TicketType type, final Integer page, final Integer pageSize) {
+	private Response fetchAllTickets(final TicketType type, final Integer page, final Integer pageSize)
+	{
 
-		PageRequest pageRequest = new PageRequest((page == 0 ? page : page-1), pageSize);
+		PageRequest pageRequest = new PageRequest(page == 0 ? page : page - 1, pageSize);
 
 		TicketResponse response = new TicketResponse();
 		Ticket ticket = new Ticket();
