@@ -7,7 +7,7 @@ import com.megabot.winner.inteface.model.Ticket;
 import com.megabot.winner.inteface.model.TicketType;
 
 @Component
-public class MegaSenaBuilder implements TicketBuilder
+public class MegaSenaTicketBuilder implements TicketBuilder
 {
 	@Override
 	public Ticket build(final Integer amountNumber)

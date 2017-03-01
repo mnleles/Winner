@@ -8,18 +8,18 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Component;
 
-import com.megabot.winner.inteface.model.Lotofacil;
+import com.megabot.winner.inteface.model.Lotomania;
 import com.megabot.winner.inteface.model.Ticket;
 import com.megabot.winner.inteface.model.TicketType;
 import com.megabot.winner.support.exception.WinnerException;
 
 @Component
-public class LotofacilLoader extends AbstractLoader
+public class LotomaniaLoader extends AbstractLoader
 {
 	@Override
 	public boolean isAssignbleTo(final TicketType type)
 	{
-		return TicketType.LOTOFACIL == type;
+		return TicketType.LOTOMANIA == type;
 	}
 
 	@Override
@@ -28,16 +28,16 @@ public class LotofacilLoader extends AbstractLoader
 		validateData(line);
 
 		String[] data = line.split(";");
-		Ticket lotofacil = new Lotofacil();
-		lotofacil.setId(UUID.randomUUID());
-		lotofacil.setContestId(Integer.parseInt(data[0]));
-		lotofacil.setDate(LocalDate.parse(data[1], getDatePattern()));
-		for (int i = 2; i <= 16; i++)
+		Ticket lotomania = new Lotomania();
+		lotomania.setId(UUID.randomUUID());
+		lotomania.setContestId(Integer.parseInt(data[0]));
+		lotomania.setDate(LocalDate.parse(data[1], getDatePattern()));
+		for (int i = 2; i <= 21; i++)
 		{
-			lotofacil.getNumbers().add(Integer.parseInt(data[i]));
+			lotomania.getNumbers().add(Integer.parseInt(data[i]));
 		}
-		lotofacil.setWinningTicket(Integer.parseInt(data[17]) > 0);
-		return lotofacil;
+		lotomania.setWinningTicket(Integer.parseInt(data[22]) > 0);
+		return lotomania;
 	}
 
 	@Override
