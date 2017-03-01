@@ -2,26 +2,27 @@ package com.megabot.winner.business.stats.impl;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.megabot.winner.business.stats.StatsGenerator;
+import com.megabot.winner.business.stats.StatsBuilder;
 import com.megabot.winner.inteface.model.FrequencyNumbersStats;
 import com.megabot.winner.inteface.model.StatsType;
 import com.megabot.winner.inteface.model.Ticket;
 import com.megabot.winner.inteface.model.TicketType;
 import com.megabot.winner.repository.StatsRepository;
 
-public abstract class AbstractFrequencyStats implements StatsGenerator
+public abstract class AbstractFrequencyStats implements StatsBuilder
 {
 	@Autowired
 	private StatsRepository statsRepository;
 
 	@Override
-	public void generateStats(final TicketType type, final Collection<Ticket> tickets)
+	public void build(final TicketType type, final Collection<Ticket> tickets)
 	{
 		Map<Integer, Integer> frequency = new HashMap<>();
 		tickets.stream().forEach(t -> {
@@ -37,6 +38,8 @@ public abstract class AbstractFrequencyStats implements StatsGenerator
 		FrequencyNumbersStats frequencyStats = new FrequencyNumbersStats();
 		frequencyStats.setId(UUID.randomUUID());
 		frequencyStats.setType(type);
+		frequencyStats.setStartDate(tickets.iterator().next().getDate());
+		frequencyStats.setEndDate(((List<Ticket>) tickets).get(tickets.size() - 1).getDate());
 		frequencyStats.setFrequency(frequency);
 		statsRepository.save(frequencyStats);
 	}

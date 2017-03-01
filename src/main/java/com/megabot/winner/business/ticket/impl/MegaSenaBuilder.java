@@ -2,15 +2,15 @@ package com.megabot.winner.business.ticket.impl;
 
 import org.springframework.stereotype.Component;
 
-import com.megabot.winner.business.ticket.TicketGenerator;
+import com.megabot.winner.business.ticket.TicketBuilder;
 import com.megabot.winner.inteface.model.Ticket;
 import com.megabot.winner.inteface.model.TicketType;
 
 @Component
-public class MegaSenaGenerator implements TicketGenerator
+public class MegaSenaBuilder implements TicketBuilder
 {
 	@Override
-	public Ticket create(final Integer amountNumber)
+	public Ticket build(final Integer amountNumber)
 	{
 		return null;
 	}

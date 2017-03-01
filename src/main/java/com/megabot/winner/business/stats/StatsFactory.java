@@ -2,6 +2,7 @@ package com.megabot.winner.business.stats;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -15,32 +16,38 @@ import com.megabot.winner.support.exception.WinnerException;
 public class StatsFactory
 {
 	@Autowired
-	private Collection<StatsGenerator> generators;
+	private Collection<StatsBuilder> generators;
 
-	public void loadDefaultStats(final TicketType type, final Collection<Ticket> tickets) throws WinnerException
+	public void loadStats(final TicketType type, final Collection<Ticket> tickets) throws WinnerException
 	{
-		findDefaultGenerators(type).stream().forEach(g -> {
-			g.generateStats(type, tickets);
+		findDefaultGenerators(type, null).stream().forEach(g -> {
+			g.build(type, tickets);
+		});
+	}
+	public void loadStats(final TicketType type, final StatsType statsType, final Collection<Ticket> tickets) throws WinnerException
+	{
+		findGenerators(type, statsType).stream().forEach(g -> {
+			g.build(type, tickets);
 		});
 	}
 
-	private Collection<StatsGenerator> findDefaultGenerators(final TicketType ticketType)
+	private Collection<StatsBuilder> findDefaultGenerators(final TicketType ticketType, final StatsType statsType)
 	{
-		Collection<StatsGenerator> defaultGenerators = new ArrayList<>();
+		Collection<StatsBuilder> defaultGenerators = new ArrayList<>();
 
 		for (StatsType statstype : StatsType.values())
 		{
 			if (statstype.isDefault())
 			{
-				defaultGenerators.add(findGenerator(ticketType));
+				defaultGenerators.addAll(findGenerators(ticketType, statsType));
 			}
 		}
 
 		return defaultGenerators;
 	}
 
-	private StatsGenerator findGenerator(final TicketType type)
+	private Collection<StatsBuilder> findGenerators(final TicketType type, final StatsType statsType)
 	{
-		return generators.stream().filter(s -> s.isAssignbleTo(type)).findFirst().get();
+		return generators.stream().filter(s -> s.isAssignbleTo(type) && statsType == null ? true : s.isStatsAssignbleTo(statsType)).collect(Collectors.toList());
 	}
 }

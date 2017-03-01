@@ -2,7 +2,7 @@ package com.megabot.winner.business.ticket;
 
 import com.megabot.winner.inteface.model.Ticket;
 
-public interface TicketGenerator extends ITicketAssignble
+public interface TicketBuilder extends ITicketAssignble
 {
-	Ticket create(Integer amountNumber);
+	Ticket build(Integer amountNumber);
 }

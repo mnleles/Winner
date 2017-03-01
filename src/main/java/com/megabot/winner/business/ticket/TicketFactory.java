@@ -18,7 +18,7 @@ import com.megabot.winner.support.exception.WinnerException;
 public class TicketFactory
 {
 	@Autowired
-	private Collection<TicketGenerator> generators;
+	private Collection<TicketBuilder> generators;
 
 	@Autowired
 	private Collection<TicketLoader> loaders;
@@ -26,13 +26,13 @@ public class TicketFactory
 	public TicketResponse createTicket(final TicketRequest request) throws WinnerException
 	{
 		isNotNull(generators, MSG_001, request.getTicketType());
-		TicketGenerator generator = findGenerator(request.getTicketType());
+		TicketBuilder generator = findGenerator(request.getTicketType());
 		isNotNull(generator, MSG_001, request.getTicketType());
 
 		TicketResponse response = new TicketResponse();
 		for (int i = 0; i < request.getAmountTickets(); i++)
 		{
-			response.addTicket(generator.create(request.getAmountTickets()));
+			response.addTicket(generator.build(request.getAmountTickets()));
 		}
 
 		return response;
@@ -46,7 +46,7 @@ public class TicketFactory
 		loader.load(rawData);
 	}
 
-	private TicketGenerator findGenerator(final TicketType type)
+	private TicketBuilder findGenerator(final TicketType type)
 	{
 		return generators.stream().filter(e -> e.isAssignbleTo(type)).findFirst().get();
 	}

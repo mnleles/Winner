@@ -2,6 +2,8 @@ package com.megabot.winner.business.ticket.loaders;
 
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -19,33 +21,30 @@ public abstract class AbstractLoader implements TicketLoader
 	public void load(final Collection<String> rawData) throws WinnerException
 	{
 		WinnerException exception = new WinnerException();
-
-		rawData.stream().forEach(t -> {
+		List<Ticket> tickets = rawData.stream().map(t -> {
 
 			try
 			{
-				saveTicket(t);
+				return toTicket(t);
 
 			} catch (WinnerException e)
 			{
 				exception.addMessages(e.getMessages());
 			}
+			return null;
 
-		});
+		}).collect(Collectors.toList());
 
 		if (!exception.getMessages().isEmpty())
 		{
 			throw exception;
 		}
+
+		ticketRepository.save(tickets);
+
 	}
 
-	protected void saveTicket(final String ticketRawData) throws WinnerException
-	{
-		validateData(ticketRawData);
-		ticketRepository.save(toTicket(ticketRawData));
-	}
-
-	protected abstract Ticket toTicket(String line);
+	protected abstract Ticket toTicket(String line) throws WinnerException;
 
 	protected abstract void validateData(final String line) throws WinnerException;
 

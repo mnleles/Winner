@@ -23,8 +23,10 @@ public class LotofacilLoader extends AbstractLoader
 	}
 
 	@Override
-	protected Ticket toTicket(final String line)
+	protected Ticket toTicket(final String line) throws WinnerException
 	{
+		validateData(line);
+
 		String[] data = line.split(";");
 		Ticket lotofacil = new Lotofacil();
 		lotofacil.setId(UUID.randomUUID());

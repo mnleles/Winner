@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.megabot.winner.business.stats.StatsFactory;
+import com.megabot.winner.inteface.model.StatsType;
 import com.megabot.winner.inteface.model.Ticket;
 import com.megabot.winner.inteface.model.TicketType;
 import com.megabot.winner.repository.TicketRepository;
@@ -28,9 +29,9 @@ public class StatsController
 	@Autowired
 	private TicketRepository ticketRepository;
 
-	@GetMapping("load-default/{type}")
+	@GetMapping("load/{stats}/{type}")
 	@ResponseBody
-	public Response loadDefault(@PathVariable(value = "type") final TicketType type)
+	public Response load(@PathVariable(value = "stats") final StatsType statsType, @PathVariable(value = "type") final TicketType type)
 	{
 		Response response = new Response();
 
@@ -38,7 +39,29 @@ public class StatsController
 		{
 			Ticket ticket = new Ticket();
 			ticket.setType(type);
-			statsFactory.loadDefaultStats(type, ticketRepository.findAll(Example.of(ticket)));
+			statsFactory.loadStats(type, statsType, ticketRepository.findAll(Example.of(ticket)));
+
+		} catch (WinnerException we)
+		{
+			response.addAllFails(we.getMessages());
+		} catch (Exception e)
+		{
+			response.addAllFail(MessageFail.builder(SYS_ERROR));
+		}
+		return response;
+	}
+
+	@GetMapping("load/default/{type}")
+	@ResponseBody
+	public Response load(@PathVariable(value = "type") final TicketType type)
+	{
+		Response response = new Response();
+
+		try
+		{
+			Ticket ticket = new Ticket();
+			ticket.setType(type);
+			statsFactory.loadStats(type, ticketRepository.findAll(Example.of(ticket)));
 
 		} catch (WinnerException we)
 		{
