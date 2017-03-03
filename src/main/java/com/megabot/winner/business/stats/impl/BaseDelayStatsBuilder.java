@@ -1,5 +1,6 @@
 package com.megabot.winner.business.stats.impl;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -7,8 +8,8 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import com.megabot.winner.business.stats.StatsBuilder;
 import com.megabot.winner.inteface.model.DelayContestStats;
 import com.megabot.winner.inteface.model.DelayNumbersStats;
 import com.megabot.winner.inteface.model.StatsType;
@@ -16,7 +17,8 @@ import com.megabot.winner.inteface.model.Ticket;
 import com.megabot.winner.inteface.model.TicketType;
 import com.megabot.winner.repository.StatsRepository;
 
-public abstract class AbstractDelayStats implements StatsBuilder
+@Component
+public class BaseDelayStatsBuilder extends BaseStatsBuilder
 {
 	@Autowired
 	private StatsRepository statsRepository;
@@ -24,10 +26,9 @@ public abstract class AbstractDelayStats implements StatsBuilder
 	@Override
 	public void build(final TicketType type, final Collection<Ticket> tickets)
 	{
-		int maxTicketNumber = type.maxNumber;
-		Map<Integer, Integer> maxDelay = getNewDelayNumbers(maxTicketNumber);
-		Map<Integer, Integer> countDelay = getNewDelayNumbers(maxTicketNumber);
-		Map<Integer, Float> avgDelay = getNewAvgDelayNumbers(maxTicketNumber);
+		Map<Integer, Integer> maxDelay = loadNumbersWithIntValue(type);
+		Map<Integer, Integer> countDelay = loadNumbersWithIntValue(type);
+		Map<Integer, Float> avgDelay = loadNumbersWithFloatValue(type);
 		Map<Integer, DelayContestStats> contestsStats = new HashMap<>();
 
 		for (int i = 0; i < tickets.size(); i++)
@@ -35,11 +36,11 @@ public abstract class AbstractDelayStats implements StatsBuilder
 			Ticket current = ((List<Ticket>) tickets).get(i);
 			if (i == 0)
 			{
-				contestsStats.put(current.getContestId(), new DelayContestStats(getNewDelayNumbers(maxTicketNumber)));
+				contestsStats.put(current.getContestId(), new DelayContestStats(loadNumbersWithIntValue(type)));
 				continue;
 			}
 
-			Map<Integer, Integer> currentContest = getContestStats(current, contestsStats.get(current.getContestId() - 1));
+			Map<Integer, Integer> currentContest = calculateDelayContestStats(current, contestsStats.get(current.getContestId() - 1));
 			contestsStats.put(current.getContestId(), new DelayContestStats(currentContest));
 			populateMaxDelay(maxDelay, currentContest);
 			populateAvgDelay(avgDelay, currentContest);
@@ -53,7 +54,7 @@ public abstract class AbstractDelayStats implements StatsBuilder
 
 		DelayNumbersStats delay = new DelayNumbersStats();
 		delay.setId(UUID.randomUUID());
-		delay.setType(type);
+		delay.setTicketType(type);
 		delay.setStartDate(tickets.iterator().next().getDate());
 		delay.setEndDate(((List<Ticket>) tickets).get(tickets.size() - 1).getDate());
 		delay.setAvgDelay(avgDelay);
@@ -64,12 +65,18 @@ public abstract class AbstractDelayStats implements StatsBuilder
 	}
 
 	@Override
+	public boolean isAssignbleTo(final TicketType type)
+	{
+		return Arrays.asList(TicketType.values()).contains(type);
+	}
+
+	@Override
 	public boolean isStatsAssignbleTo(final StatsType type)
 	{
 		return StatsType.DELAY_NUMBERS == type;
 	}
 
-	private Map<Integer, Integer> getContestStats(final Ticket current, final DelayContestStats latestDelay)
+	private Map<Integer, Integer> calculateDelayContestStats(final Ticket current, final DelayContestStats latestDelay)
 	{
 		// Load all numbers
 		Map<Integer, Integer> contestStats = new HashMap<>();
@@ -80,27 +87,6 @@ public abstract class AbstractDelayStats implements StatsBuilder
 		});
 
 		return contestStats;
-	}
-
-	private Map<Integer, Float> getNewAvgDelayNumbers(final Integer maxNumber)
-	{
-		Map<Integer, Float> delayNumbers = new HashMap<>();
-		for (int i = 1; i <= maxNumber; i++)
-		{
-			delayNumbers.put(i, 0F);
-		}
-
-		return delayNumbers;
-	}
-	private Map<Integer, Integer> getNewDelayNumbers(final Integer maxNumber)
-	{
-		Map<Integer, Integer> delayNumbers = new HashMap<>();
-		for (int i = 1; i <= maxNumber; i++)
-		{
-			delayNumbers.put(i, 0);
-		}
-
-		return delayNumbers;
 	}
 
 	private void populateAvgDelay(final Map<Integer, Float> avgDelay, final Map<Integer, Integer> currentContest)

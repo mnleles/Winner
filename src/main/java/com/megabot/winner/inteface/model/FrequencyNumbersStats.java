@@ -6,6 +6,11 @@ public class FrequencyNumbersStats extends Stats
 {
 	private Map<Integer, Integer> frequency;
 
+	public FrequencyNumbersStats()
+	{
+		setStatsType(StatsType.FREQUENCY_NUMBERS);
+	}
+
 	public Map<Integer, Integer> getFrequency()
 	{
 		return frequency;

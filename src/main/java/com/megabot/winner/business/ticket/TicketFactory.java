@@ -1,8 +1,7 @@
 package com.megabot.winner.business.ticket;
 
-import static com.megabot.winner.support.Constraints.isNotEmpty;
-import static com.megabot.winner.support.Constraints.isNotNull;
-import static com.megabot.winner.support.model.FailCode.MSG_001;
+import static com.megabot.winner.support.Constraints.*;
+import static com.megabot.winner.support.model.FailCode.*;
 
 import java.util.Collection;
 
@@ -30,11 +29,7 @@ public class TicketFactory
 		isNotNull(generator, MSG_001, request.getTicketType());
 
 		TicketResponse response = new TicketResponse();
-		for (int i = 0; i < request.getAmountTickets(); i++)
-		{
-			response.addTicket(generator.build(request.getAmountTickets()));
-		}
-
+		response.addTickets(generator.build(request));
 		return response;
 	}
 

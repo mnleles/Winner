@@ -6,7 +6,8 @@ public class Stats extends AbstractModel
 {
 	private LocalDate endDate;
 	private LocalDate startDate;
-	private TicketType type;
+	private StatsType statsType;
+	private TicketType ticketType;
 
 	public LocalDate getEndDate()
 	{
@@ -18,9 +19,14 @@ public class Stats extends AbstractModel
 		return startDate;
 	}
 
-	public TicketType getType()
+	public StatsType getStatsType()
 	{
-		return type;
+		return statsType;
+	}
+
+	public TicketType getTicketType()
+	{
+		return ticketType;
 	}
 
 	public void setEndDate(final LocalDate endDate)
@@ -33,9 +39,14 @@ public class Stats extends AbstractModel
 		this.startDate = startDate;
 	}
 
-	public void setType(final TicketType type)
+	public void setStatsType(final StatsType statsType)
 	{
-		this.type = type;
+		this.statsType = statsType;
+	}
+
+	public void setTicketType(final TicketType type)
+	{
+		this.ticketType = type;
 	}
 
 }

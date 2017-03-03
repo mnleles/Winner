@@ -11,7 +11,6 @@ import java.util.UUID;
 import javax.annotation.Resource;
 
 import org.apache.commons.io.FileUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -27,6 +26,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.megabot.winner.business.ticket.TicketFactory;
 import com.megabot.winner.inteface.model.Ticket;
+import com.megabot.winner.inteface.model.TicketRequest;
 import com.megabot.winner.inteface.model.TicketResponse;
 import com.megabot.winner.inteface.model.TicketType;
 import com.megabot.winner.repository.TicketRepository;
@@ -38,12 +38,31 @@ import com.megabot.winner.support.model.Response;
 @RequestMapping("ticket")
 public class TicketController
 {
-	@Autowired
+	@Resource
 	private TicketFactory ticketFactory;
 
 	@Resource
 	private TicketRepository ticketRepository;
 
+	@GetMapping("create/lotofacil")
+	@ResponseBody
+	public Response createLotofacilTickets()
+	{
+		TicketResponse response = new TicketResponse();
+
+		try
+		{
+			TicketRequest request = new TicketRequest();
+			request.setAmountNumbers(15);
+			request.setTicketType(TicketType.LOTOFACIL);
+			response = ticketFactory.createTicket(request);
+
+		} catch (WinnerException we)
+		{
+			response.addAllFails(we.getMessages());
+		}
+		return response;
+	}
 	@GetMapping("fetchById")
 	@ResponseBody
 	public Response fetchById(@RequestParam("id") final String id)
