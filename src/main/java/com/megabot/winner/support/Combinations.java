@@ -21,7 +21,7 @@ public class Combinations
 	public static List<String[]> generate(final String[] input, final int n)
 	{
 		List<String[]> allResults = new ArrayList<>();
-		generateCombinations(input, 3, 0, new String[3], allResults);
+		generateCombinations(input, n, 0, new String[n], allResults);
 		return allResults;
 	}
 

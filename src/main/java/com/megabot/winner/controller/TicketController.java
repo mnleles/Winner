@@ -63,6 +63,27 @@ public class TicketController
 		}
 		return response;
 	}
+
+	@GetMapping("create/lotomania")
+	@ResponseBody
+	public Response createLotomaniaTickets()
+	{
+		TicketResponse response = new TicketResponse();
+
+		try
+		{
+			TicketRequest request = new TicketRequest();
+			request.setAmountNumbers(15);
+			request.setTicketType(TicketType.LOTOMANIA);
+			response = ticketFactory.createTicket(request);
+
+		} catch (WinnerException we)
+		{
+			response.addAllFails(we.getMessages());
+		}
+		return response;
+	}
+
 	@GetMapping("fetchById")
 	@ResponseBody
 	public Response fetchById(@RequestParam("id") final String id)

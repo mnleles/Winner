@@ -3,7 +3,7 @@ package com.megabot.winner.inteface.model;
 public enum TicketType
 {
 	LOTOFACIL(15, 1, 25),
-	LOTOMANIA(20, 0, 99),
+	LOTOMANIA(50, 0, 99),
 	MEGA_SENA(6, 1, 60);
 
 	public int amountNumbers;

@@ -27,7 +27,7 @@ import com.megabot.winner.repository.StatsRepository;
 import com.megabot.winner.support.Combinations;
 
 @Component
-public class LotofacilTicketBuilder implements TicketBuilder
+public class LotomaniaTicketBuilder implements TicketBuilder
 {
 	@Resource
 	private StatsRepository statsRepository;
@@ -50,17 +50,21 @@ public class LotofacilTicketBuilder implements TicketBuilder
 				.map(e -> e.getKey()).collect(Collectors.toList());
 
 		Map<String, List<Integer>> groups = new HashMap<>();
-		groups.put("1", joinLists(numbersLatestSorted.subList(0, 3), otherNumbersLatestSorted.subList(0, 2)));
-		groups.put("2", joinLists(numbersLatestSorted.subList(3, 6), otherNumbersLatestSorted.subList(2, 4)));
-		groups.put("3", joinLists(numbersLatestSorted.subList(6, 9), otherNumbersLatestSorted.subList(4, 6)));
-		groups.put("4", joinLists(numbersLatestSorted.subList(9, 12), otherNumbersLatestSorted.subList(6, 8)));
-		groups.put("5", joinLists(numbersLatestSorted.subList(12, 15), otherNumbersLatestSorted.subList(8, 10)));
+		groups.put("1", joinLists(numbersLatestSorted.subList(0, 5), otherNumbersLatestSorted.subList(0, 20)));
+		groups.put("2", joinLists(numbersLatestSorted.subList(5, 10), otherNumbersLatestSorted.subList(10, 30)));
+		groups.put("3", joinLists(numbersLatestSorted.subList(10, 15), otherNumbersLatestSorted.subList(20, 40)));
+		groups.put("4", joinLists(numbersLatestSorted.subList(15, 20), otherNumbersLatestSorted.subList(30, 50)));
 
-		List<String[]> combinations = Combinations.generate(groups.keySet().toArray(new String[groups.size()]), 3);
+		List<String[]> combinations = Combinations.generate(groups.keySet().toArray(new String[groups.size()]), 2);
 		List<Ticket> tickets = new ArrayList<>();
 		for (String[] c : combinations)
 		{
-			Set<Integer> numbers = new TreeSet<>(joinLists(groups.get(c[0]), groups.get(c[1]), groups.get(c[2])));
+			Set<Integer> numbers = new TreeSet<>(joinLists(groups.get(c[0]), groups.get(c[1])));
+
+			if (numbers.size() < request.getTicketType().amountNumbers)
+			{
+				continue;
+			}
 
 			Ticket ticket = new Ticket();
 			ticket.setType(request.getTicketType());
@@ -73,7 +77,7 @@ public class LotofacilTicketBuilder implements TicketBuilder
 	@Override
 	public boolean isAssignbleTo(final TicketType type)
 	{
-		return TicketType.LOTOFACIL == type;
+		return TicketType.LOTOMANIA == type;
 	}
 
 	private DelayNumbersStats fetchDelayStats(final TicketType ticketType)
@@ -99,7 +103,7 @@ public class LotofacilTicketBuilder implements TicketBuilder
 
 	private Comparator<Entry<Integer, Integer>> getRepetitionNumbersComparator()
 	{
-		return (input1, input2) -> Integer.compare(input2.getValue(), input1.getValue());
+		return (input1, input2) -> Integer.compare(input1.getValue(), input2.getValue());
 	}
 
 	@SuppressWarnings("unchecked")
